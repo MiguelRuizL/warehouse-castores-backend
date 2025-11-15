@@ -1,12 +1,12 @@
 USE almacen_castores_mruiz;
 
 CREATE TABLE roles(
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     name NVARCHAR(50)
 );
 
 CREATE TABLE users(
-    id BIGINT PRIMARY KEY,
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
     username NVARCHAR(100),
     email NVARCHAR(100),
     password NVARCHAR(MAX),
@@ -15,20 +15,20 @@ CREATE TABLE users(
     CONSTRAINT user_role_fk FOREIGN KEY (id_role) REFERENCES roles (id)
 );
 
-CREATE TABLE product (
-    id BIGINT PRIMARY KEY,
-    product NVARCHAR(255),
+CREATE TABLE products (
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
+    name NVARCHAR(255),
     quantity INT,
     status BIT
 );
 
 CREATE TABLE logbook (
-    id BIGINT PRIMARY KEY,
+    id BIGINT PRIMARY KEY IDENTITY(1,1),
     movement_type VARCHAR(20),
     id_product BIGINT,
     id_user BIGINT,
     quantity INT,
     done_at DATETIME,
-    CONSTRAINT product_logbook_fk FOREIGN KEY (id_product) REFERENCES product (id),
+    CONSTRAINT product_logbook_fk FOREIGN KEY (id_product) REFERENCES products (id),
     CONSTRAINT user_logbook_fk FOREIGN KEY (id_user) REFERENCES users (id)
 );
