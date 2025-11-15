@@ -9,13 +9,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name="roles")
-public class Role {
-
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="name", nullable = false, unique = true)
-    private String name;
+    private String product;
+
+    private Integer quantity;
+
+    private Boolean status;
 }

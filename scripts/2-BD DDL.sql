@@ -1,6 +1,6 @@
 USE almacen_castores_mruiz;
 
-CREATE TABLE role(
+CREATE TABLE roles(
     id INT PRIMARY KEY,
     name NVARCHAR(50)
 );
@@ -12,7 +12,7 @@ CREATE TABLE users(
     password NVARCHAR(MAX),
     id_role INT,
     status BIT,
-    CONSTRAINT user_role_fk FOREIGN KEY (id_role) REFERENCES role (id)
+    CONSTRAINT user_role_fk FOREIGN KEY (id_role) REFERENCES roles (id)
 );
 
 CREATE TABLE product (
