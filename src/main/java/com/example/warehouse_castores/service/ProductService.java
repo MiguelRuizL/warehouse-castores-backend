@@ -1,14 +1,11 @@
 package com.example.warehouse_castores.service;
 
-import com.example.warehouse_castores.dto.ProductDTO;
+import com.example.warehouse_castores.dto.product.ProductDTO;
 import com.example.warehouse_castores.model.Product;
 import com.example.warehouse_castores.repository.ProductRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.event.TransactionalEventListener;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 

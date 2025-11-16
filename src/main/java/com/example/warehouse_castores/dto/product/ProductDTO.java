@@ -1,4 +1,4 @@
-package com.example.warehouse_castores.dto;
+package com.example.warehouse_castores.dto.product;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
@@ -18,7 +18,7 @@ public class ProductDTO {
     // cantidad para hacer suma/resta
     private Integer toSumQuantity;
 
-    // cantidad para sobreescribir totalmente (no debe sser negativa)
+    // cantidad para sobreescribir totalmente (no debe sser negativa - no se usa)
     @Min(0)
     private Integer fullNewQuantity;
 
