@@ -16,8 +16,8 @@ public class Logbook {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "varchar(20)")
-    private String movement_type;
+    @Column(name="movement_type", columnDefinition = "varchar(20)")
+    private String movementType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="id_product")
@@ -29,5 +29,6 @@ public class Logbook {
 
     private Integer quantity;
 
-    private LocalDateTime done_at;
+    @Column(name = "done_at")
+    private LocalDateTime doneAt;
 }

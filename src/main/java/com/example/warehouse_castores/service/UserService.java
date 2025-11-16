@@ -1,6 +1,7 @@
 package com.example.warehouse_castores.service;
 
 import com.example.warehouse_castores.dto.auth.CreateUserDTO;
+import com.example.warehouse_castores.dto.auth.UserResponseDTO;
 import com.example.warehouse_castores.model.Role;
 import com.example.warehouse_castores.model.User;
 import com.example.warehouse_castores.repository.RoleRepository;
@@ -8,6 +9,9 @@ import com.example.warehouse_castores.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,5 +53,24 @@ public class UserService implements UserDetailsService {
         newUser.setStatus(true);
 
         return userRepository.save(newUser);
+    }
+
+    public User getAuthenticatedUserEntity() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+            throw new UsernameNotFoundException("No hay un usuario autenticado");
+        }
+        return (User) authentication.getPrincipal();
+    }
+
+    public UserResponseDTO getCurrentUser() throws UsernameNotFoundException {
+            User currentUser = getAuthenticatedUserEntity();
+            UserResponseDTO response = new UserResponseDTO();
+            response.setUsername(currentUser.getRealUsername());
+            response.setEmail(currentUser.getEmail());
+            response.setRoleName(currentUser.getRole().getName());
+            response.setStatus(currentUser.getStatus());
+
+            return response;
     }
 }

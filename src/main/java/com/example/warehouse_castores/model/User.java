@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition="nvarchar(100)")
+    @Column(name="username", columnDefinition="nvarchar(100)")
     private String username;
 
     @Column(columnDefinition="nvarchar(100)")
@@ -37,6 +37,9 @@ public class User implements UserDetails {
 
     private Boolean status;
 
+    public String getRealUsername() {
+        return this.username;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

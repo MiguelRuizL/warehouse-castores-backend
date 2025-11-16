@@ -3,7 +3,6 @@ package com.example.warehouse_castores.controller;
 import com.example.warehouse_castores.dto.auth.AuthDTO;
 import com.example.warehouse_castores.dto.GenericResponseDTO;
 import com.example.warehouse_castores.dto.auth.CreateUserDTO;
-import com.example.warehouse_castores.dto.auth.UserResponseDTO;
 import com.example.warehouse_castores.model.User;
 import com.example.warehouse_castores.service.JwtService;
 import com.example.warehouse_castores.service.UserService;

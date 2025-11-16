@@ -15,6 +15,9 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    LogbookService logbookService;
+
     public List<Product> getAllProducts(Boolean status) {
         return (status != null) ? productRepository.findByStatus(status) : productRepository.findAll();
     }
@@ -88,6 +91,7 @@ public class ProductService {
             throw new IllegalArgumentException("El tipo de movimiento '" + productData.getType() + "' no es válido. Debe ser 'input' o 'output'.");
         }
 
+        logbookService.insertLogbook(type, productToUpdate, quantityChange);
         return productRepository.save(productToUpdate);
     }
 }
