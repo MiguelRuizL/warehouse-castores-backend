@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
@@ -63,6 +65,11 @@ public class UserService implements UserDetailsService {
         return (User) authentication.getPrincipal();
     }
 
+    public Role getCurrentUserRole() {
+        return getAuthenticatedUserEntity().getRole();
+    }
+
+    // para devolver una respuesta JSON segura (sin contraseña del usuario / ya no se usa)
     public UserResponseDTO getCurrentUser() throws UsernameNotFoundException {
             User currentUser = getAuthenticatedUserEntity();
             UserResponseDTO response = new UserResponseDTO();

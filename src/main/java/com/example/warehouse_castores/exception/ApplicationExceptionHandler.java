@@ -4,6 +4,7 @@ import com.example.warehouse_castores.dto.GenericResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,11 +37,19 @@ public class ApplicationExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<GenericResponseDTO<Object>> handleBadCredentials(BadCredentialsException ex) {
-        GenericResponseDTO<Object> response = new GenericResponseDTO<>(
+        return new ResponseEntity<>(new GenericResponseDTO<>(
                 false,
                 "Credenciales inválidas. Verifique su usuario y contraseña.",
                 null
-        );
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        ), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<GenericResponseDTO<String>> handleAccessDenied(AccessDeniedException ex) {
+        return new ResponseEntity<>(new GenericResponseDTO<>(
+                false,
+                "Acceso denegado.",
+                ex.getMessage()
+        ), HttpStatus.FORBIDDEN);
     }
 }

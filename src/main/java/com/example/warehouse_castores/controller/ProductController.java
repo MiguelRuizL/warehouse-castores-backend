@@ -6,6 +6,7 @@ import com.example.warehouse_castores.service.LogbookService;
 import com.example.warehouse_castores.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,11 +24,13 @@ public class ProductController {
         return productService.getAllProducts(status);
     }
 
+    @PreAuthorize("hasAuthority('Administrador')")
     @PostMapping("")
     public Product createProduct(@Valid @RequestBody Product product) {
         return productService.createProduct(product);
     }
 
+    @PreAuthorize("hasAuthority('Administrador')")
     @PutMapping("/{idProduct}")
     public Product updateProduct(
             @PathVariable Long idProduct,

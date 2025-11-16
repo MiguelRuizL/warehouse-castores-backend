@@ -2,9 +2,12 @@ package com.example.warehouse_castores.service;
 
 import com.example.warehouse_castores.dto.product.ProductDTO;
 import com.example.warehouse_castores.model.Product;
+import com.example.warehouse_castores.model.Role;
+import com.example.warehouse_castores.model.User;
 import com.example.warehouse_castores.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +17,15 @@ public class ProductService {
 
     @Autowired
     ProductRepository productRepository;
-
     @Autowired
     LogbookService logbookService;
+    @Autowired
+    UserService userService;
 
     public List<Product> getAllProducts(Boolean status) {
-        return (status != null) ? productRepository.findByStatus(status) : productRepository.findAll();
+        return (status != null) ?
+                productRepository.findByStatus(status) :
+                productRepository.findAll();
     }
 
     public Product getProductById(Long id) {
@@ -66,13 +72,15 @@ public class ProductService {
         Product productToUpdate = this.getProductById(idProduct);
         String type = productData.getType();
         Integer quantityChange = productData.getToSumQuantity();
+        String role = userService.getCurrentUserRole().getName();
 
-        if (quantityChange == null || quantityChange == 0) {
+        if (quantityChange == null || quantityChange == 0)
             throw new IllegalArgumentException("La cantidad a sumar/retirar no puede ser nula o 0.");
-        }
 
         // Módulo de inventario (entradas)
         if("input".equals(type)) {
+            if (!"Administrador".equals(role))
+                throw new AccessDeniedException("No tienes permisos para realizar entradas de inventario.");
             if (quantityChange < 0) {
                 throw new IllegalArgumentException("No se puede efectuar la salida de un producto desde este módulo.");
             } else {
@@ -80,6 +88,8 @@ public class ProductService {
                 productToUpdate.setQuantity(newQuantity);
             }
         } else if ("output".equals(type)) { // Módulo de salidas
+            if (!"Almacenista".equals(role))
+                throw new AccessDeniedException("No tienes permisos para realizar salidas de inventario.");
             if (quantityChange > 0) {
                 throw new IllegalArgumentException("No se puede efectuar la entrada de un producto desde este módulo.");
             } else {
