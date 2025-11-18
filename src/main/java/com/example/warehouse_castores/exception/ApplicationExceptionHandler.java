@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,6 +51,15 @@ public class ApplicationExceptionHandler {
                 false,
                 "Acceso denegado.",
                 ex.getMessage()
+        ), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<GenericResponseDTO<String>> handleAuthorizationDenied(AccessDeniedException ex) {
+        return new ResponseEntity<>(new GenericResponseDTO<>(
+                false,
+                "Permisos insuficientes.",
+                "No tiene los permisos necesarios para realizar esta acción"
         ), HttpStatus.FORBIDDEN);
     }
 }
